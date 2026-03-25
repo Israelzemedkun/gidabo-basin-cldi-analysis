@@ -42,7 +42,7 @@ All index values are normalised to [0, 1] using MinMaxScaler before combining. C
 
 - **Algorithm:** Random Forest classifier (`n_estimators=100`, `random_state=42`)
 - **Split:** 80% training / 20% test, stratified by class
-- **Features:** `NDVI_2000`, `NDVI_2024`, `BSI_2000`, `BSI_2024`, `SI_2000`, `SI_2024`, `NDVI_Change`, `SI_Change`, `CLDI`
+- **Features:** `NDVI_2000`, `NDVI_2024`, `BSI_2000`, `BSI_2024`, `SI_2000`, `SI_2024`, `NDVI_Change`, `SI_Change`
 - **Target:** `Degradation_Status` (Degraded / Stable / Improved) derived from CLDI thresholds
 - **Evaluation:** Accuracy, classification report (precision, recall, F1), confusion matrix
 - **Saved model:** `models/rf_model.pkl`
