@@ -14,22 +14,32 @@ print("Fetching boundary...")
 aoi = get_gidabo_basin()
 
 def process_landsat_5(image):
-    """Calculates NDVI and BSI for Year 2000 data."""
+    """Calculates NDVI, BSI, and SI for Year 2000 data (Landsat 5)."""
     ndvi = image.normalizedDifference(['SR_B4', 'SR_B3']).rename('NDVI_2000')
     bsi = image.expression('((B5 + B3) - (B4 + B1)) / ((B5 + B3) + (B4 + B1))', {
         'B5': image.select('SR_B5'), 'B3': image.select('SR_B3'),
         'B4': image.select('SR_B4'), 'B1': image.select('SR_B1')
     }).rename('BSI_2000')
-    return image.addBands([ndvi, bsi])
+    # Salinity Index: sqrt(Green * Red) — SR_B2=Green, SR_B3=Red for Landsat 5
+    si = image.expression('sqrt(B2 * B3)', {
+        'B2': image.select('SR_B2'),
+        'B3': image.select('SR_B3')
+    }).rename('SI_2000')
+    return image.addBands([ndvi, bsi, si])
 
 def process_landsat_8(image):
-    """Calculates NDVI and BSI for Year 2024 data."""
+    """Calculates NDVI, BSI, and SI for Year 2024 data (Landsat 8)."""
     ndvi = image.normalizedDifference(['SR_B5', 'SR_B4']).rename('NDVI_2024')
     bsi = image.expression('((B6 + B4) - (B5 + B2)) / ((B6 + B4) + (B5 + B2))', {
         'B6': image.select('SR_B6'), 'B4': image.select('SR_B4'),
         'B5': image.select('SR_B5'), 'B2': image.select('SR_B2')
     }).rename('BSI_2024')
-    return image.addBands([ndvi, bsi])
+    # Salinity Index: sqrt(Green * Red) — SR_B3=Green, SR_B4=Red for Landsat 8
+    si = image.expression('sqrt(B3 * B4)', {
+        'B3': image.select('SR_B3'),
+        'B4': image.select('SR_B4')
+    }).rename('SI_2024')
+    return image.addBands([ndvi, bsi, si])
 
 print("Processing imagery...")
 # Fetching the Data
@@ -42,7 +52,9 @@ current_state = (ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
                  .map(process_landsat_8).median().clip(aoi))
 
 # Combine the bands into one image
-combined_image = pre_degradation.select(['NDVI_2000', 'BSI_2000']).addBands(current_state.select(['NDVI_2024', 'BSI_2024']))
+combined_image = pre_degradation.select(['NDVI_2000', 'BSI_2000', 'SI_2000']).addBands(
+    current_state.select(['NDVI_2024', 'BSI_2024', 'SI_2024'])
+)
 
 # Sample 500 random points within the basin
 print("Sampling random points...")
@@ -86,8 +98,9 @@ def assign_zone(lat):
 
 df['Zone'] = df['latitude'].apply(assign_zone)
 
-# Calculate change to use as a single variable
+# Calculate temporal change columns
 df['NDVI_Change'] = df['NDVI_2024'] - df['NDVI_2000']
+df['SI_Change'] = df['SI_2024'] - df['SI_2000']
 df['Degradation_Status'] = df['NDVI_Change'].apply(lambda x: 'Degraded' if x < -0.05 else ('Improved' if x > 0.05 else 'Stable'))
 
 
