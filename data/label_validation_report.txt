@@ -1,0 +1,40 @@
+=== LABEL VALIDATION AGAINST ESA WorldCover 2021 ===
+
+DEGRADED points (n=79):
+  - 94.9% fall on degradation-consistent land cover (Bare/Cropland/Shrubland/Grassland)  [n=75]
+  - 5.1% fall on degradation-inconsistent land cover (Tree cover/Water/etc)  [n=4]
+  WorldCover breakdown:
+    WorldCover_Label
+    Grassland                 56
+    Cropland                  11
+    Shrubland                  7
+    Permanent water bodies     3
+    Built-up                   1
+    Bare/sparse vegetation     1
+
+STABLE points (n=339):
+  - 99.7% fall on degradation-consistent land cover (Bare/Cropland/Shrubland/Grassland)  [n=338]
+  - 0.3% fall on degradation-inconsistent land cover (Tree cover/Water/etc)  [n=1]
+  WorldCover breakdown:
+    WorldCover_Label
+    Cropland      133
+    Shrubland     130
+    Grassland      75
+    Tree cover      1
+
+IMPROVED points (n=82):
+  - 75.6% fall on degradation-consistent land cover (Bare/Cropland/Shrubland/Grassland)  [n=62]
+  - 24.4% fall on degradation-inconsistent land cover (Tree cover/Water/etc)  [n=20]
+  WorldCover breakdown:
+    WorldCover_Label
+    Shrubland     56
+    Tree cover    20
+    Grassland      3
+    Cropland       3
+
+VALIDATION CONCLUSION:
+  If >=65% of Degraded points fall on degradation-consistent classes -> labels are defensible
+  If < 50% -> label methodology needs revision
+
+  RESULT: 94.9% of Degraded points are on degradation-consistent WorldCover classes.
+  CONCLUSION: CLDI-derived labels are defensible as training targets for the Random Forest classifier.

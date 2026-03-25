@@ -3,13 +3,16 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import joblib
 
 # ── Load data ──────────────────────────────────────────────────────────────────
 data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'gidabo_degradation_samples.csv'))
 df = pd.read_csv(data_path)
+# Drop columns from any previous run to avoid conflicts
+cols_to_drop = [c for c in df.columns if '_norm' in c or c in ['CLDI', 'CLDI_2000']]
+df = df.drop(columns=cols_to_drop)
 print(f"Loaded {len(df)} samples with columns: {', '.join(df.columns)}")
 
 # ── Normalize NDVI, BSI, SI columns to [0, 1] ─────────────────────────────────
@@ -49,8 +52,10 @@ print("\nDegradation status distribution:")
 print(df['Degradation_Status'].value_counts())
 
 # ── Features and target ────────────────────────────────────────────────────────
+# Features are raw spectral indices only. CLDI is used for label generation but
+# excluded from features to avoid circularity.
 features = ['NDVI_2000', 'NDVI_2024', 'BSI_2000', 'BSI_2024',
-            'SI_2000', 'SI_2024', 'NDVI_Change', 'SI_Change', 'CLDI']
+            'SI_2000', 'SI_2024', 'NDVI_Change', 'SI_Change']
 X = df[features]
 y = df['Degradation_Status']
 
@@ -70,6 +75,38 @@ print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 print("Confusion Matrix:")
 print(confusion_matrix(y_test, y_pred, labels=['Degraded', 'Stable', 'Improved']))
+
+# ── Validation 1: 5-fold cross-validation ─────────────────────────────────────
+cv_scores = cross_val_score(
+    RandomForestClassifier(n_estimators=100, random_state=42),
+    X, y, cv=5, scoring='accuracy'
+)
+print("\n5-Fold Cross-Validation Accuracy:")
+print(f"  Folds:  {[f'{s:.4f}' for s in cv_scores]}")
+print(f"  Mean:   {cv_scores.mean():.4f}")
+print(f"  Std:    {cv_scores.std():.4f}")
+
+# ── Validation 2: Stratified 5-fold cross-validation ──────────────────────────
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+skf_scores = cross_val_score(
+    RandomForestClassifier(n_estimators=100, random_state=42),
+    X, y, cv=skf, scoring='accuracy'
+)
+print("\nStratified 5-Fold Cross-Validation Accuracy:")
+print(f"  Folds:  {[f'{s:.4f}' for s in skf_scores]}")
+print(f"  Mean:   {skf_scores.mean():.4f}")
+print(f"  Std:    {skf_scores.std():.4f}")
+
+# ── Validation 3: Learning curve ──────────────────────────────────────────────
+print("\nLearning Curve (accuracy vs training set size):")
+print(f"  {'Train size':>12}  {'N samples':>10}  {'Accuracy':>10}")
+for frac in [0.2, 0.4, 0.6, 0.8, 1.0]:
+    n = max(int(len(X_train) * frac), 1)
+    X_sub, y_sub = X_train.iloc[:n], y_train.iloc[:n]
+    lc_rf = RandomForestClassifier(n_estimators=100, random_state=42)
+    lc_rf.fit(X_sub, y_sub)
+    acc = accuracy_score(y_test, lc_rf.predict(X_test))
+    print(f"  {frac*100:>11.0f}%  {n:>10}  {acc:>10.4f}")
 
 # ── Save model ─────────────────────────────────────────────────────────────────
 models_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'models'))
