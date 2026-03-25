@@ -2,7 +2,7 @@
 
 ## Background
 
-The Gidabo River Basin, located in the Ethiopian Rift Valley south of Lake Abijata-Shalla, drains approximately 3,500 km² of highland and rift-floor terrain. It supports a dense smallholder farming population relying primarily on rain-fed cereal cultivation, coffee agroforestry, and irrigated horticulture along the valley floor. Over the past two decades, expanding cropland, woodland clearance, and population-driven overgrazing have accelerated soil exposure and surface salinisation in the lower rift, while upper catchment forests have come under increasing charcoal and timber pressure. Reliable, spatially explicit monitoring of land degradation is essential for targeting soil and water conservation investments, advising farmers on the most at-risk parcels, and tracking the effectiveness of restoration programmes over time.
+The Gidabo River Basin, located in the Ethiopian Rift Valley south of Lake Abijata-Shalla, drains approximately 3,500 sq km of highland and rift-floor terrain. It supports a dense smallholder farming population relying primarily on rain-fed cereal cultivation, coffee agroforestry, and irrigated horticulture along the valley floor. Over the past two decades, expanding cropland, woodland clearance, and population-driven overgrazing have accelerated soil exposure and surface salinisation in the lower rift, while upper catchment forests have come under increasing charcoal and timber pressure. Reliable, spatially explicit monitoring of land degradation is essential for targeting soil and water conservation investments, advising farmers on the most at-risk parcels, and tracking the effectiveness of restoration programmes over time.
 
 ## Research Questions
 
@@ -13,7 +13,7 @@ The Gidabo River Basin, located in the Ethiopian Rift Valley south of Lake Abija
 ## Combined Land Degradation Index (CLDI)
 
 ```
-CLDI = 0.5 × (1 − NDVI_norm) + 0.3 × BSI_norm + 0.2 × SI_norm
+CLDI = 0.5 * (1 - NDVI_norm) + 0.3 * BSI_norm + 0.2 * SI_norm
 ```
 
 | Component | Weight | Justification |
@@ -26,18 +26,18 @@ All index values are normalised to [0, 1] using MinMaxScaler before combining. C
 
 ## Data Sources
 
-- **Landsat 5 TM** (year 2000): USGS Collection 2 Tier 1 Surface Reflectance — `LANDSAT/LT05/C02/T1_L2` via Google Earth Engine
-- **Landsat 8 OLI** (2023–2024): USGS Collection 2 Tier 1 Surface Reflectance — `LANDSAT/LC08/C02/T1_L2` via Google Earth Engine
+- **Landsat 5 TM** (year 2000): USGS Collection 2 Tier 1 Surface Reflectance - `LANDSAT/LT05/C02/T1_L2` via Google Earth Engine
+- **Landsat 8 OLI** (2023-2024): USGS Collection 2 Tier 1 Surface Reflectance - `LANDSAT/LC08/C02/T1_L2` via Google Earth Engine
 - All bands use the `SR_` prefix (Surface Reflectance). No TOA or proxy bands are used.
 - Spectral indices:
-  - **NDVI** — `(NIR − Red) / (NIR + Red)`
-  - **BSI** — `((SWIR1 + Red) − (NIR + Blue)) / ((SWIR1 + Red) + (NIR + Blue))`
-  - **SI** — `sqrt(Green × Red)`
+  - **NDVI** - `(NIR - Red) / (NIR + Red)`
+  - **BSI** - `((SWIR1 + Red) - (NIR + Blue)) / ((SWIR1 + Red) + (NIR + Blue))`
+  - **SI** - `sqrt(Green * Red)`
 
 ## Machine Learning Methodology
 
 - **Algorithm:** Random Forest classifier (`n_estimators=100`, `random_state=42`)
-- **Split:** 80 % training / 20 % test, stratified by class
+- **Split:** 80% training / 20% test, stratified by class
 - **Features:** `NDVI_2000`, `NDVI_2024`, `BSI_2000`, `BSI_2024`, `SI_2000`, `SI_2024`, `NDVI_Change`, `SI_Change`, `CLDI`
 - **Target:** `Degradation_Status` (Degraded / Stable / Improved) derived from CLDI thresholds
 - **Evaluation:** Accuracy, classification report (precision, recall, F1), confusion matrix
@@ -47,18 +47,18 @@ All index values are normalised to [0, 1] using MinMaxScaler before combining. C
 
 ```
 gidabo-basin-cldi-analysis/
-├── data/
-│   └── gidabo_degradation_samples.csv   # 500 sampled pixels with all indices
-├── models/
-│   └── rf_model.pkl                     # Trained Random Forest model
-├── notebooks/
-│   └── analysis.ipynb                   # Full analytical pipeline and visualisations
-├── scripts/
-│   ├── aoi_utils.py                     # Basin boundary helper
-│   ├── generate_csv_data.py             # GEE data extraction and CSV generation
-│   ├── ml_classifier.py                 # Model training and evaluation
-│   └── cldi_processor.py               # CLDI computation utilities
-└── requirements.txt
+    data/
+        gidabo_degradation_samples.csv   # 500 sampled pixels with all indices
+    models/
+        rf_model.pkl                     # Trained Random Forest model
+    notebooks/
+        analysis.ipynb                   # Full analytical pipeline and visualisations
+    scripts/
+        aoi_utils.py                     # Basin boundary helper
+        generate_csv_data.py             # GEE data extraction and CSV generation
+        ml_classifier.py                 # Model training and evaluation
+        cldi_processor.py                # CLDI computation utilities
+    requirements.txt
 ```
 
 ## Setup and Run Instructions
