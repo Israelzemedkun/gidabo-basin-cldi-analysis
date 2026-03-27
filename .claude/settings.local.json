@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(jq \".cells[] | select\\(.cell_type==\"\"markdown\"\"\\) | .source[0:80]\")",
+      "Bash(python3:*)",
+      "Bash(python -c \":*)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\(''app/streamlit_app.py''\\).read\\(\\)\\); print\\(''Syntax OK''\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\(''app/streamlit_app.py''\\).read\\(\\)\\); print\\(''OK''\\)\")"
+    ]
+  }
+}
