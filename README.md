@@ -4,6 +4,12 @@
 
 This project monitors land degradation in Ethiopia's Gidabo River Basin using Landsat 5 (2000) and Landsat 8 (2024) surface reflectance data. A Combined Land Degradation Index integrating vegetation, bare soil, and salinity signals classifies 500 sampled pixels. A Random Forest classifier achieves 95% cross-validated accuracy, with 94.9% of degradation labels independently confirmed by ESA WorldCover 2021.
 
+## Live Dashboard
+
+Interactive app: https://gidabo-basin-cldi-analysis-7agztyjqthonaswefnezcf.streamlit.app/
+
+Features: spatial degradation map, zone filters, CLDI distribution, degradation risk predictor, and CSV export.
+
 ## Background
 
 The Gidabo River Basin, located in the Ethiopian Rift Valley south of Lake Abijata-Shalla, drains approximately 3,500 sq km of highland and rift-floor terrain. It supports a dense smallholder farming population relying primarily on rain-fed cereal cultivation, coffee agroforestry, and irrigated horticulture along the valley floor. Over the past two decades, expanding cropland, woodland clearance, and population-driven overgrazing have accelerated soil exposure and surface salinisation in the lower rift, while upper catchment forests have come under increasing charcoal and timber pressure. Reliable, spatially explicit monitoring of land degradation is essential for targeting soil and water conservation investments, advising farmers on the most at-risk parcels, and tracking the effectiveness of restoration programmes over time.
