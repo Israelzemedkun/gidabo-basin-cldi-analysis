@@ -6,7 +6,8 @@
       "Bash(python -c \":*)",
       "Bash(python -c \"import ast; ast.parse\\(open\\(''app/streamlit_app.py''\\).read\\(\\)\\); print\\(''Syntax OK''\\)\")",
       "Bash(python -c \"import ast; ast.parse\\(open\\(''app/streamlit_app.py''\\).read\\(\\)\\); print\\(''OK''\\)\")",
-      "Bash(streamlit run:*)"
+      "Bash(streamlit run:*)",
+      "Bash(python:*)"
     ]
   }
 }
