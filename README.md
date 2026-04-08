@@ -10,6 +10,11 @@ Interactive app: https://gidabo-basin-cldi-analysis-7agztyjqthonaswefnezcf.strea
 
 Features: spatial degradation map, zone filters, CLDI distribution, degradation risk predictor, and CSV export.
 
+## Interactive Tools
+
+- **Streamlit Dashboard** (analysis results): https://gidabo-basin-cldi-analysis-7agztyjqthonaswefnezcf.streamlit.app/
+- **Gidabo Monitor** (interactive RUSLE risk assessment for Ethiopia): https://gidabo-monitor-ko6e.vercel.app/
+
 ## Background
 
 The Gidabo River Basin, located in the Ethiopian Rift Valley south of Lake Abijata-Shalla, drains approximately 3,500 sq km of highland and rift-floor terrain. It supports a dense smallholder farming population relying primarily on rain-fed cereal cultivation, coffee agroforestry, and irrigated horticulture along the valley floor. Over the past two decades, expanding cropland, woodland clearance, and population-driven overgrazing have accelerated soil exposure and surface salinisation in the lower rift, while upper catchment forests have come under increasing charcoal and timber pressure. Reliable, spatially explicit monitoring of land degradation is essential for targeting soil and water conservation investments, advising farmers on the most at-risk parcels, and tracking the effectiveness of restoration programmes over time.
