@@ -7,7 +7,8 @@
       "Bash(python -c \"import ast; ast.parse\\(open\\(''app/streamlit_app.py''\\).read\\(\\)\\); print\\(''Syntax OK''\\)\")",
       "Bash(python -c \"import ast; ast.parse\\(open\\(''app/streamlit_app.py''\\).read\\(\\)\\); print\\(''OK''\\)\")",
       "Bash(streamlit run:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(find /c/Users/lenovo -name Map.js -not -path *node_modules* -not -path */.venv/*)"
     ]
   }
 }
