@@ -8,7 +8,16 @@
       "Bash(python -c \"import ast; ast.parse\\(open\\(''app/streamlit_app.py''\\).read\\(\\)\\); print\\(''OK''\\)\")",
       "Bash(streamlit run:*)",
       "Bash(python:*)",
-      "Bash(find /c/Users/lenovo -name Map.js -not -path *node_modules* -not -path */.venv/*)"
+      "Bash(find /c/Users/lenovo -name Map.js -not -path *node_modules* -not -path */.venv/*)",
+      "Bash(mkdir -p /c/Users/lenovo/ELD-Monitor/gidabo-basin-cldi-analysis/figures)",
+      "Bash(mv /c/Users/lenovo/ELD-Monitor/gidabo-basin-cldi-analysis/data/fig_*.png /c/Users/lenovo/ELD-Monitor/gidabo-basin-cldi-analysis/figures/)",
+      "Bash(mkdir -p 01_data_extraction 02_processing 03_modeling 04_validation)",
+      "Bash(mv generate_csv_data.py extract_ethiopia_grid.py aoi_utils.py 01_data_extraction/)",
+      "Bash(mv cldi_processor.py 02_processing/)",
+      "Bash(mv ml_classifier.py 03_modeling/)",
+      "Bash(mv validate_labels.py 04_validation/)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
